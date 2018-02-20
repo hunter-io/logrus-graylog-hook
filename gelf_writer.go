@@ -17,7 +17,6 @@ import (
 	"os"
 	"path"
 	"sync"
-	"time"
 )
 
 // Writer implements io.Writer and is used to send both discrete
@@ -241,7 +240,7 @@ func (w *Writer) Warning(m string) (err error)
 func (w *Writer) Write(p []byte) (n int, err error) {
 
 	// 1 for the function that called us.
-	file, line := getCallerIgnoringLogMulti(1)
+	// file, line := getCallerIgnoringLogMulti(1)
 
 	// remove trailing and leading whitespace
 	p = bytes.TrimSpace(p)
@@ -258,16 +257,16 @@ func (w *Writer) Write(p []byte) (n int, err error) {
 	}
 
 	m := Message{
-		Version:  "1.0",
-		Host:     w.hostname,
-		Short:    string(short),
-		Full:     string(full),
-		TimeUnix: float64(time.Now().UnixNano()/1000000) / 1000.,
-		Level:    6, // info
-		Facility: w.Facility,
-		File:     file,
-		Line:     line,
-		Extra:    map[string]interface{}{},
+		Version: "1.0",
+		Host:    w.hostname,
+		Short:   string(short),
+		Full:    string(full),
+		// TimeUnix: float64(time.Now().UnixNano()/1000000) / 1000.,
+		// Level:    6, // info
+		// Facility: w.Facility,
+		// File:     file,
+		// Line:     line,
+		Extra: map[string]interface{}{},
 	}
 
 	if err = w.WriteMessage(&m); err != nil {
